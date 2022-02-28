@@ -55,8 +55,6 @@ public class TestGetIP {
                 String value = header.getValue();
                 LoggerUtils.log.info("头信息："+name+": "+value);
             }
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }

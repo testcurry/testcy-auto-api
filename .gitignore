@@ -8,3 +8,5 @@
 /httpRequests/
 /.idea/
 /auto-api.iml/
+/target/
+/logs/

@@ -29,7 +29,6 @@ public class TestPostLogin {
         HttpPost httpPost = new HttpPost("http://www.testingedu.com.cn:8000/index.php?m=Home&c=User&a=do_login&t=0.48018265463013776");
         //通过请求头设置正文格式
 //        httpPost.setHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
-
         try {
             StringEntity stringEntity = new StringEntity("username=13800138006&password=123456&verify_code=1");
             //设置正文格式，通过实体对象来设置
@@ -45,9 +44,11 @@ public class TestPostLogin {
             LoggerUtils.log.info("返回正文为："+result);
 
             result=AutoTools.decodeUnicode(result);
+            LoggerUtils.log.info("Unicode解码之后的返回结果为："+result);
             //json解析
             String msg = JSONPath.read(result, "$.msg").toString();
-            Assertions.assertEquals("登录成功", msg);
+            LoggerUtils.log.info("unicode解码之后的返回结果中的msg字段信息为："+msg);
+            Assertions.assertEquals("登陆成功", msg);
         } catch (Exception e) {
             e.printStackTrace();
         }

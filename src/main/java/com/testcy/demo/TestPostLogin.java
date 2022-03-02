@@ -13,11 +13,9 @@ import org.apache.http.util.EntityUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 /**
  * @Classname TestPostLogin
- * @Description TODO
+ * @Description post请求接口示例
  * @Date 2022/2/28 13:53
  * @Created by qitongtong
  * @Version 1.0

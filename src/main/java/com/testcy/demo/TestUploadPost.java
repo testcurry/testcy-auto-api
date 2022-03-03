@@ -28,8 +28,8 @@ public class TestUploadPost {
         //设置请求地址和请求方式
         String url="http://www.testingedu.com.cn:8000/index.php/home/Uploadify/imageUp/savepath/head_pic/pictitle/banner/dir/images.html";
         HttpPost httpPost = new HttpPost(url);
-        //设置http请求头 Content-Type
-        httpPost.setHeader("Content-Type","multipart/form-data");
+        //设置http请求头 Content-Type，如果使用MultipartEntityBuilder构造请求体，则header中的额Content-Type就不需要添加了
+//        httpPost.setHeader("Content-Type","multipart/form-data");
         //构造请求体
         MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
         multipartEntityBuilder.addBinaryBody("road2", new File("src/main/resources/images/road2.jpg"));

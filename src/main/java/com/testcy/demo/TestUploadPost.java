@@ -1,6 +1,5 @@
 package com.testcy.demo;
 
-import com.testcy.utils.AutoTools;
 import com.testcy.utils.LoggerUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;

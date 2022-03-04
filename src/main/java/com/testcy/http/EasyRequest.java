@@ -3,6 +3,7 @@ package com.testcy.http;
 import com.alibaba.fastjson.JSONObject;
 import com.testcy.utils.LoggerUtils;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -18,6 +19,35 @@ import org.apache.http.util.EntityUtils;
  * @Version 1.0
  **/
 public class EasyRequest {
+
+    public static String postNoBodyRequest(String url, String entity, String... headers) {
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);
+        StringEntity stringEntity = null;
+        try {
+    /*        stringEntity = new StringEntity(entity);
+            stringEntity.setContentType("application/x-www-form-urlencoded");
+            stringEntity.setContentEncoding("utf-8");
+            httpPost.setEntity(stringEntity);*/
+            if (headers.length > 0) {
+                for (String header : headers) {
+                    JSONObject jsonObject = JSONObject.parseObject(header);
+                    for (String key : jsonObject.keySet()) {
+                        httpPost.addHeader(key, jsonObject.getString(key));
+                    }
+                }
+            }
+            CloseableHttpResponse result = client.execute(httpPost);
+            String response = EntityUtils.toString(result.getEntity(), "utf-8");
+            return response;
+        } catch (Exception e) {
+            LoggerUtils.log.error("实体内容或实体编码方式有误！请检查...");
+            String response = e.fillInStackTrace().toString();
+            e.printStackTrace();
+            return response;
+        }
+    }
+
 
     /**
      * Content-Type为application/x-www-form-urlencoded格式的post请求封装
@@ -44,7 +74,8 @@ public class EasyRequest {
                     }
                 }
             }
-            String response = EntityUtils.toString(stringEntity, "utf-8");
+            CloseableHttpResponse result = client.execute(httpPost);
+            String response = EntityUtils.toString(result.getEntity(), "utf-8");
             return response;
         } catch (Exception e) {
             LoggerUtils.log.error("实体内容或实体编码方式有误！请检查...");

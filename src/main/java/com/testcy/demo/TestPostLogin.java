@@ -1,7 +1,7 @@
 package com.testcy.demo;
 
 import com.alibaba.fastjson.JSONPath;
-import com.testcy.utils.AutoTools;
+import com.testcy.utils.AutoUtils;
 import com.testcy.utils.LoggerUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -40,8 +40,7 @@ public class TestPostLogin {
             HttpEntity entity = response.getEntity();
             String result = EntityUtils.toString(entity, "utf-8");
             LoggerUtils.log.info("返回正文为："+result);
-
-            result=AutoTools.decodeUnicode(result);
+            result= AutoUtils.decodeUnicode(result);
             LoggerUtils.log.info("Unicode解码之后的返回结果为："+result);
             //json解析
             String msg = JSONPath.read(result, "$.msg").toString();

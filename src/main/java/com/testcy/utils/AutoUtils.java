@@ -1,17 +1,20 @@
 package com.testcy.utils;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
+import java.util.Random;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @Classname AutoTools
- * @Description 接口测试常用工具方法
- * @Date 2022/2/28 17:33
+ * @Classname AutoUtils
+ * @Description 生成随机字符串的几种方法
+ * @Date 2021/12/2 10:36
  * @Created by qitongtong
  * @Version 1.0
  **/
-public class AutoTools {
-
+public class AutoUtils {
     /**
      * 将字符串中所有的Unicode编码字符转换为中文
      * @param origin 包含Unicode编码字符的原始字符串
@@ -44,4 +47,63 @@ public class AutoTools {
         matcher.appendTail(stringBuffer);
         return stringBuffer.toString();
     }
+
+
+
+    //可以指定某个位置是a-z、A-Z或是0-9
+    public static String getRandomString2(int length){
+        Random random=new Random();
+        StringBuffer sb=new StringBuffer();
+        for(int i=0;i<length;i++){
+            int number=random.nextInt(3);
+            long result=0;
+            switch(number){
+                case 0:
+                    result=Math.round(Math.random()*25+65);
+                    sb.append(String.valueOf((char)result));
+                    break;
+                case 1:
+                    result=Math.round(Math.random()*25+97);
+                    sb.append(String.valueOf((char)result));
+                    break;
+                case 2:
+                    sb.append(String.valueOf(new Random().nextInt(10)));
+                    break;
+            }
+
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 生成指定长度的随机字符串
+     * @param length 字符串长度
+     * @return 返回随机字符串
+     */
+    public static String  generateRandomString(int length){
+        String randomStr = RandomStringUtils.random(length);
+        return randomStr;
+    }
+
+    public static String getUUID() {
+        UUID uuid = UUID.randomUUID();
+        String str = uuid.toString();
+        // 去掉"-"符号
+        String temp = str.substring(0, 8) + str.substring(9, 13) + str.substring(14, 18) + str.substring(19, 23) + str.substring(24);
+        return str + "," + temp;
+    }
+
+    //获得指定数量的UUID
+    public static String[] getUUID(int number) {
+        if (number < 1) {
+            return null;
+        }
+        String[] ss = new String[number];
+        for (int i = 0; i < number; i++) {
+            ss[i] = getUUID();
+        }
+        return ss;
+    }
+
+
 }

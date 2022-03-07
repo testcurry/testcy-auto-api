@@ -2,13 +2,14 @@ package com.testcy.http;
 
 import com.alibaba.fastjson.JSONObject;
 import com.testcy.utils.LoggerUtils;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+
+import java.util.Set;
 
 
 /**
@@ -25,10 +26,10 @@ public class EasyRequest {
         HttpPost httpPost = new HttpPost(url);
         StringEntity stringEntity = null;
         try {
-    /*        stringEntity = new StringEntity(entity);
+            stringEntity = new StringEntity(entity);
             stringEntity.setContentType("application/x-www-form-urlencoded");
             stringEntity.setContentEncoding("utf-8");
-            httpPost.setEntity(stringEntity);*/
+            httpPost.setEntity(stringEntity);
             if (headers.length > 0) {
                 for (String header : headers) {
                     JSONObject jsonObject = JSONObject.parseObject(header);
@@ -48,8 +49,7 @@ public class EasyRequest {
         }
     }
 
-
-    /**
+      /**
      * Content-Type为application/x-www-form-urlencoded格式的post请求封装
      *
      * @param url     请求url
@@ -69,7 +69,8 @@ public class EasyRequest {
             if (headers.length > 0) {
                 for (String header : headers) {
                     JSONObject jsonObject = JSONObject.parseObject(header);
-                    for (String key : jsonObject.keySet()) {
+                    Set<String> keys = jsonObject.keySet();
+                    for (String key : keys) {
                         httpPost.addHeader(key, jsonObject.getString(key));
                     }
                 }

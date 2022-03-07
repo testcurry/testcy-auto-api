@@ -1,9 +1,7 @@
 package com.testcy.demo;
 
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
 import com.testcy.http.EasyRequest;
-import com.testcy.utils.AutoUtils;
 import com.testcy.utils.DateUtils;
 import com.testcy.utils.LoggerUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -26,10 +24,37 @@ import java.io.IOException;
 public class TestEasyResquest {
 
     @Test
+    public void testLogin() {
+        //auth接口
+        String response0 = EasyRequest.postRequest("http://www.testingedu.com.cn:8081/inter/HTTP/auth", "");
+        LoggerUtils.log.info("auth接口返回结果为：" + response0);
+        String token = JSONPath.read(response0, "$.token").toString();
+        LoggerUtils.log.info("auth返回结果中token的值为：" + token);
+        String tokenH = "{" + "\"token\"" + ":\""+token + "\"" + "}";
+        LoggerUtils.log.info("json格式的token：" + tokenH);
+        //注册接口
+        String username = "testcy" + DateUtils.createTime("mmss") ;
+        LoggerUtils.log.info("随机生成的注册用户名为:"+username);
+        String response1 = EasyRequest.postRequest("http://www.testingedu.com.cn:8081/inter/HTTP//register?username="+username+"&pwd=123456&nickname=库里yyds&describe=傻酷mvp", "", tokenH);
+        LoggerUtils.log.info("登录接口返回结果为：" + response1);
+        //登录接口
+        String response2 = EasyRequest.postRequest("http://www.testingedu.com.cn:8081/inter/HTTP/login", "username="+username+"&password=123456", tokenH);
+        LoggerUtils.log.info("登录接口返回结果为：" + response2);
+        //查询用户接口
+        String userId = JSONPath.read(response2, "$.userid").toString();
+        LoggerUtils.log.info("当前用户id为："+userId);
+        String response3 = EasyRequest.postRequest("http://testingedu.com.cn:8081/inter/HTTP/getUserInfo", "id="+userId, tokenH);
+        LoggerUtils.log.info("查询用户接口返回结果为：" + response3);
+        //登出接口
+        String response4 = EasyRequest.postRequest("http://testingedu.com.cn:8081/inter/HTTP/logout", "", tokenH);
+        LoggerUtils.log.info("注销接口返回结果为：" + response4);
+    }
+
+    @Test
     public void testEduInter() {
         String result = null;
-        String username="Curry"+ DateUtils.createTime("mmss");
-        LoggerUtils.log.info("当前随机注册的用户为："+username);
+        String username = "Curry" + DateUtils.createTime("mmss");
+        LoggerUtils.log.info("当前随机注册的用户为：" + username);
         try {
             CloseableHttpClient client1 = HttpClients.custom().build();
             CloseableHttpClient client0 = HttpClients.createDefault();
@@ -52,7 +77,7 @@ public class TestEasyResquest {
             HttpPost login = new HttpPost("http://www.testingedu.com.cn:8081/inter/HTTP/login");
             //设置登录接口头-->token
             login.addHeader("token", tokenV);
-            StringEntity entity = new StringEntity("username="+username+"&password=123456");
+            StringEntity entity = new StringEntity("username=" + username + "&password=123456");
             entity.setContentType("application/x-www-form-urlencoded");
             entity.setContentEncoding("utf-8");
             login.setEntity(entity);
